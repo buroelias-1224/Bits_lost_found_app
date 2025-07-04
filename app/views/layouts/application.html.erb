@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || "Lost Found App" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-50 text-gray-900">
+    <!-- 🔝 Header -->
+    <header class="bg-white shadow fixed top-0 left-0 w-full z-10">
+      <div class="container mx-auto px-5 py-4 flex items-center justify-between">
+        <h1 class="text-xl font-semibold"><%= link_to "Lost & Found", root_path, class: "text-blue-600 hover:text-blue-800" %></h1>
+
+        <div class="text-sm space-x-4">
+          <% if user_signed_in? %>
+            <span>Hello, <%= current_user.email %> (<%= current_user.role %>)</span>
+            <%= link_to "Logout", destroy_user_session_path, method: :delete, data: { turbo_method: :delete }, class: "text-red-500 hover:underline" %>
+          <% else %>
+            <%= link_to "Login", new_user_session_path, class: "text-blue-500 hover:underline" %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "text-blue-500 hover:underline" %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+
+    <!-- 📄 Main Content -->
+    <main class="container mx-auto mt-32 px-5">
+      <% if notice %>
+        <div class="mb-5 px-4 py-2 bg-green-100 text-green-800 rounded">
+          <%= notice %>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="mb-5 px-4 py-2 bg-red-100 text-red-800 rounded">
+          <%= alert %>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+  </body>
+</html>

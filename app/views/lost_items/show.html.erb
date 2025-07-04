@@ -1,0 +1,30 @@
+<% content_for :title, "Showing lost item" %>
+
+<div class="md:w-2/3 w-full mx-auto">
+  <% if notice.present? %>
+    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-md inline-block" id="notice">
+      <%= notice %>
+    </p>
+  <% end %>
+
+  <h1 class="font-bold text-4xl mb-6">Showing Lost Item</h1>
+
+  <!-- 🔍 Render the item partial -->
+  <%= render @lost_item %>
+
+  <!-- 🔘 Action Buttons -->
+  <div class="flex flex-wrap gap-3 mt-6">
+    <% if user_signed_in? && (current_user.admin? || current_user == @lost_item.user) %>
+      <%= link_to "Edit this lost item", edit_lost_item_path(@lost_item),
+          class: "rounded-md px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium" %>
+
+      <%= button_to "Destroy this lost item", @lost_item, method: :delete,
+          data: { turbo_confirm: "Are you sure?" },
+          form_class: "inline-block",
+          class: "rounded-md px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium" %>
+    <% end %>
+
+    <%= link_to "Back to lost items", lost_items_path,
+        class: "rounded-md px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium" %>
+  </div>
+</div>
